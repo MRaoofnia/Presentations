@@ -229,7 +229,126 @@ int main()
 
 
 \begin{frame}[fragile]
-  \frametitle{Returning from a function}
+  \frametitle{Buffer overflows}
+  \begin{itemize}
+  	\item Buffer
+  	\begin{itemize}
+  		\item Contiguous memory associated with a variable or field
+  		\item Common in C (Strings)
+  	\end{itemize}
+  	\item Overflow
+  	\begin{itemize}
+  		\item Put more into a buffer than it can hold
+  	\end{itemize}
+	\item Where does the overflowing data go?
+		\item Well, now we know the memory layout ... 
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Buffer overflows}
+\begin{lstlisting}
+void func(char *arg1)
+{
+   char buffer[4];
+   strcpy(buffer, arg1);
+   ...
+}
+int main()
+{
+    const *mystr = "Authme!";
+    func(mystr);
+    ...
+}
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.20]{stackff5.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Buffer overflows}
+\begin{lstlisting}
+void func(char *arg1)
+{
+   char buffer[4];
+   strcpy(buffer, arg1);
+   ...
+}
+int main()
+{
+    const *mystr = "Authme!";
+    func(mystr);
+    ...
+}
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.20]{stackff6.png}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Buffer overflows}
+\begin{lstlisting}
+void func(char *arg1)
+{
+   char buffer[4];
+   strcpy(buffer, arg1);
+   ...
+}
+int main()
+{
+    const *mystr = "Authme!";
+    func(mystr);
+    ...
+}
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.20]{stackff7.png}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Buffer overflows}
+\begin{lstlisting}
+void func(char *arg1)
+{
+   int authenticated = 0
+   char buffer[4];
+   strcpy(buffer, arg1);
+   if(authenticated) { ...
+}
+int main()
+{
+    const *mystr = "Authme!";
+    func(mystr);
+    ...
+}
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.20]{stackff8.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Even Worse!}
+\textcolor{red}{Attacker can inject his code and arrange for the program to execute it!}
+\begin{center}
+\includegraphics[scale=0.35]{stackff9.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Code Injection}
 
 \end{frame}
 
